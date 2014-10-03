@@ -7,7 +7,8 @@ jQuery(document).ready(function($){
 		faqTrigger = $('.cd-faq-trigger'),
 		faqsContainer = $('.cd-faq-items'),
 		faqsCategoriesContainer = $('.cd-faq-categories'),
-		faqsCategories = faqsCategoriesContainer.find('a');
+		faqsCategories = faqsCategoriesContainer.find('a'),
+		closeFaqsContainer = $('.cd-close-panel');
 	
 	//select a faq section 
 	faqsCategories.on('click', function(event){
@@ -16,6 +17,7 @@ jQuery(document).ready(function($){
 			target= $(selectedHref);
 		if( $(window).width() < MqM) {
 			faqsContainer.scrollTop(0).addClass('slide-in').children('ul').removeClass('selected').end().children(selectedHref).addClass('selected');
+			closeFaqsContainer.addClass('move-left');
 			$('body').addClass('cd-overlay');
 		} else {
 	        $('body,html').animate({ 'scrollTop': target.offset().top - 19}, 200); 
@@ -24,7 +26,7 @@ jQuery(document).ready(function($){
 
 	//close faq lateral panel - mobile only
 	$('body').bind('click touchstart', function(event){
-		if( $(event.target).is('body.cd-overlay') ) { 
+		if( $(event.target).is('body.cd-overlay') || $(event.target).is('.cd-close-panel')) { 
 			closePanel();
 		}
 	});
@@ -65,6 +67,7 @@ jQuery(document).ready(function($){
 	function closePanel() {
 		event.preventDefault();
 		faqsContainer.removeClass('slide-in').find('li').show();
+		closeFaqsContainer.removeClass('move-left');
 		$('body').removeClass('cd-overlay');
 	}
 
