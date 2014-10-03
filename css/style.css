@@ -316,6 +316,11 @@ header h1 {
 .cd-close-panel.move-left {
   right: 2%;
 }
+@media only screen and (min-width: 768px) {
+  .cd-close-panel {
+    display: none;
+  }
+}
 
 .cd-faq-group {
   /* hide group not selected */

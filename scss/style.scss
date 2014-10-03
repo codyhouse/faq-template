@@ -298,6 +298,10 @@ header {
 	&.move-left {
 		right: 2%;
 	}
+
+	@include MQ(M) {
+		display: none;
+	}
 }
 
 .cd-faq-group {
