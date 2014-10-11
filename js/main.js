@@ -7,7 +7,8 @@ jQuery(document).ready(function($){
 		faqTrigger = $('.cd-faq-trigger'),
 		faqsContainer = $('.cd-faq-items'),
 		faqsCategoriesContainer = $('.cd-faq-categories'),
-		faqsCategories = faqsCategoriesContainer.find('a');
+		faqsCategories = faqsCategoriesContainer.find('a'),
+		closeFaqsContainer = $('.cd-close-panel');
 	
 	//select a faq section 
 	faqsCategories.on('click', function(event){
@@ -16,6 +17,7 @@ jQuery(document).ready(function($){
 			target= $(selectedHref);
 		if( $(window).width() < MqM) {
 			faqsContainer.scrollTop(0).addClass('slide-in').children('ul').removeClass('selected').end().children(selectedHref).addClass('selected');
+			closeFaqsContainer.addClass('move-left');
 			$('body').addClass('cd-overlay');
 		} else {
 	        $('body,html').animate({ 'scrollTop': target.offset().top - 19}, 200); 
@@ -24,12 +26,12 @@ jQuery(document).ready(function($){
 
 	//close faq lateral panel - mobile only
 	$('body').bind('click touchstart', function(event){
-		if( $(event.target).is('body.cd-overlay') ) { 
-			closePanel();
+		if( $(event.target).is('body.cd-overlay') || $(event.target).is('.cd-close-panel')) { 
+			closePanel(event);
 		}
 	});
 	faqsContainer.on('swiperight', function(event){
-		closePanel();
+		closePanel(event);
 	});
 
 	//show faq content clicking on faqTrigger
@@ -38,23 +40,23 @@ jQuery(document).ready(function($){
 		$(this).next('.cd-faq-content').slideToggle(200).end().parent('li').toggleClass('content-visible');
 	});
 
-	if ( $(window).width() > MqL ) {
-		//update category sidebar while scrolling
-		$(window).on('scroll', function(){
-			(!window.requestAnimationFrame) ? updateCategory() : window.requestAnimationFrame(updateCategory);
-		});
-	}
+	//update category sidebar while scrolling
+	$(window).on('scroll', function(){
+		if ( $(window).width() > MqL ) {
+			(!window.requestAnimationFrame) ? updateCategory() : window.requestAnimationFrame(updateCategory); 
+		}
+	});
 
 	$(window).on('resize', function(){
 		if($(window).width() <= MqL) {
-			faqsCategoriesContainer.removeClass('is-fixed');
-		} else {
-			updateCategory();
-			$(window).on('scroll', function(){
-				(!window.requestAnimationFrame) ? updateCategory() : window.requestAnimationFrame(updateCategory);
+			faqsCategoriesContainer.removeClass('is-fixed').css({
+				'-moz-transform': 'translateY(0)',
+			    '-webkit-transform': 'translateY(0)',
+				'-ms-transform': 'translateY(0)',
+				'-o-transform': 'translateY(0)',
+				'transform': 'translateY(0)',
 			});
-		}
-
+		}	
 		if( faqsCategoriesContainer.hasClass('is-fixed') ) {
 			faqsCategoriesContainer.css({
 				'left': faqsContainer.offset().left,
@@ -62,9 +64,10 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	function closePanel() {
-		event.preventDefault();
+	function closePanel(e) {
+		e.preventDefault();
 		faqsContainer.removeClass('slide-in').find('li').show();
+		closeFaqsContainer.removeClass('move-left');
 		$('body').removeClass('cd-overlay');
 	}
 
@@ -75,18 +78,33 @@ jQuery(document).ready(function($){
 
 	function updateCategoryPosition() {
 		var top = $('.cd-faq').offset().top,
+			height = jQuery('.cd-faq').height() - jQuery('.cd-faq-categories').height(),
 			margin = 20;
-		if( top - margin > $(window).scrollTop()) {
-			faqsCategoriesContainer.removeClass('is-fixed').css({
-				'left': 0,
-				'top': 0,
-			});
-		} else { 
+		if( top - margin <= $(window).scrollTop() && top - margin + height > $(window).scrollTop() ) {
 			var leftValue = faqsCategoriesContainer.offset().left,
 				widthValue = faqsCategoriesContainer.width();
 			faqsCategoriesContainer.addClass('is-fixed').css({
 				'left': leftValue,
 				'top': margin,
+				'-moz-transform': 'translateZ(0)',
+			    '-webkit-transform': 'translateZ(0)',
+				'-ms-transform': 'translateZ(0)',
+				'-o-transform': 'translateZ(0)',
+				'transform': 'translateZ(0)',
+			});
+		} else if( top - margin + height <= $(window).scrollTop()) {
+			var delta = top - margin + height - $(window).scrollTop();
+			faqsCategoriesContainer.css({
+				'-moz-transform': 'translateZ(0) translateY('+delta+'px)',
+			    '-webkit-transform': 'translateZ(0) translateY('+delta+'px)',
+				'-ms-transform': 'translateZ(0) translateY('+delta+'px)',
+				'-o-transform': 'translateZ(0) translateY('+delta+'px)',
+				'transform': 'translateZ(0) translateY('+delta+'px)',
+			});
+		} else { 
+			faqsCategoriesContainer.removeClass('is-fixed').css({
+				'left': 0,
+				'top': 0,
 			});
 		}
 	}
