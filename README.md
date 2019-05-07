@@ -1,9 +1,15 @@
-FAQ Template
-=========
+# FAQ Template
+
 An easy to customize template for the FAQ section of your project, with the questions/answers grouped in categories to ease the navigation.
 
-[Article on CodyHouse](http://codyhouse.co/gem/css-faq-template/)
+[Article on CodyHouse](https://codyhouse.co/gem/css-faq-template)
 
-[Demo](http://codyhouse.co/demo/faq-template/index.html)
+[Demo](https://codyhouse.co/demo/faq-template)
  
-[Terms](http://codyhouse.co/terms/)
+[License](https://codyhouse.co/license)
+
+## Dependencies
+
+This experiment is built upon the [CodyHouse Framework](https://github.com/CodyHouse/codyhouse-framework).
+
+Make sure to include both _globals.scss and util.js files of the framework.
