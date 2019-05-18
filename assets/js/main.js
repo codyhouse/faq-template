@@ -50,10 +50,10 @@
 
 		// on desktop -> toggle faq content visibility when clicking on the trigger element
 		faqs.faqContainer.addEventListener('click', function(event){
-			event.preventDefault();
 			if(getMq(faqs) != 'desktop') return;
 			var trigger = event.target.closest('.cd-faq__trigger');
 			if(!trigger) return;
+			event.preventDefault();
 			var content = trigger.nextElementSibling,
 				parent = trigger.closest('li'),
 				bool = Util.hasClass(parent, 'cd-faq__item-visible');
