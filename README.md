@@ -12,4 +12,4 @@ An easy to customize template for the FAQ section of your project, with the ques
 
 This experiment is built upon the [CodyHouse Framework](https://github.com/CodyHouse/codyhouse-framework).
 
-Make sure to include both _globals.scss and util.js files of the framework.
+Make sure to include both style.scss and util.js files of the framework.
